@@ -1,0 +1,64 @@
+Sub ボタン8_Click()
+
+Set oap = CreateObject("Outlook.Application")
+
+
+'-----
+
+'Const olFolderInbox = 6
+
+Set objNamespace = oap.GetNamespace("MAPI")
+
+Set objInbox = objNamespace.GetDefaultFolder(6)
+
+
+MsgBox objInbox.Name
+Dim A As Variant
+Dim B As Variant
+
+
+
+A = "fsfd"
+B = "445"
+
+    
+    
+ Call GetSubfolders(objInbox, A, B)
+ 
+ MsgBox i_Folder.Items.Count
+'受信トレイを全件処理
+For idx = i_Folder.Items.Count To 1 Step -1
+'件名に"あいうえお"があれば移動
+If InStr(i_Folder.Items(idx).Subject, "【1704バッチST】") > 0 Then
+    Set ReplyMail = i_Folder.Items(idx).Reply
+
+        '#色々設定
+        '内容：セル番地C2にCCアドレス、C3に件名、C4に本文
+        'のあたりは前の回答のリンクを参考に
+    ReplyMail.body = "aaa" & vbCrLf & ReplyMail.body
+        
+        '#返信表示or送信
+    ReplyMail.Display
+
+End If
+
+Next
+End Sub
+Function GetSubfolders(objParentFolder)
+    Set colFolders = objParentFolder.Folders
+    For Each objFolder In colFolders
+    Set objSubfolder = objParentFolder.Folders(objFolder.Name)
+    MsgBox objFolder.Name
+    If objFolder.Name = "バッチST" Then
+       Set ReplyMail = objFolder.Items(1).Reply
+        ReplyMail.body = C
+        
+        '#返信表示or送信
+        ReplyMail.Display
+    
+    End If
+    
+   Call GetSubfolders(objSubfolder)
+    Next
+
+End Function
